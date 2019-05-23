@@ -5,6 +5,7 @@ const prettier = require('prettier');
 const { NodeVM } = require('vm2');
 const _ = require('lodash');
 const XTemplate = require('xtemplate');
+const dslHelper = require('@imgcook/dsl-helper');
 const data = require('./data');
 var originData = require('./origin-data');
 const vm = new NodeVM({
@@ -26,6 +27,7 @@ describe('Generate', function() {
         };
         const renderInfo = vm.run(code)(data, {
           prettier: prettier,
+          helper: dslHelper,
           _: _,
           originData: originData
         });
@@ -38,16 +40,8 @@ describe('Generate', function() {
         const ret = new XTemplate(tpl).render(renderData);
         fs.ensureDirSync(path.resolve(__dirname, './codeExample'));
         fs.writeFileSync(
-          path.join(__dirname, './codeExample/index.jsx'),
-          prettier.format(ret, prettierOpt)
-        );
-        fs.writeFileSync(
-          path.join(__dirname, './codeExample/mod.jsx'),
-          prettier.format(modClass, prettierOpt)
-        );
-        fs.writeFileSync(
-          path.join(__dirname, './codeExample/style.js'),
-          prettier.format(style, prettierOpt)
+          path.join(__dirname, './codeExample/index.vue'),
+          ret
         );
       });
     });

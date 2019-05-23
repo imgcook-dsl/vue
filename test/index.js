@@ -5,6 +5,7 @@ const thunkify = require('thunkify');
 const path = require('path');
 const prettier = require('prettier');
 const { NodeVM } = require('vm2');
+const dslHelper = require('@imgcook/dsl-helper');
 const _ = require('lodash');
 const data = require('./data');
 const originData = require('./origin-data');
@@ -23,6 +24,7 @@ co(function*() {
   const renderInfo = vm.run(code)(data, {
     prettier: prettier,
     _: _,
+    helper: dslHelper,
     originData: originData
   });
   const renderData = renderInfo.renderData;
@@ -32,9 +34,5 @@ co(function*() {
     {}
   );
 
-  console.log(
-    prettier.format(ret, {
-      printWidth: 120
-    })
-  );
+  console.log(ret);
 });

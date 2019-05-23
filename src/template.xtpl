@@ -1,13 +1,12 @@
-'use strict';
+<template>
+{{{template}}}
+</template>
 
-import { createElement, Component, render } from 'rax';
+<script>
+{{{mockDataScript}}}
+{{{script}}}
+</script>
 
-{{{import}}}
-
+<style scoped>
 {{{style}}}
-
-{{{mockData}}}
-
-{{{modClass}}}
-
-{{{export}}}
+</style>
