@@ -1,0 +1,19 @@
+{
+  "name": "@imgcook/dsl-template",
+  "devDependencies": {
+    "@imgcook/dsl-helper": "^0.0.1-alpha.0",
+    "co": "^4.6.0",
+    "fs-extra": "^8.0.1",
+    "lodash": "^4.17.11",
+    "prettier": "^1.11.1",
+    "thunkify": "^2.1.2",
+    "vm2": "^3.5.2",
+    "xml-beautifier": "^0.4.0",
+    "xtemplate": "^4.6.1",
+    "xtpl": "^3.4.0"
+  },
+  "scripts": {
+    "test": "node ./test/index.js",
+    "mtest": "mocha test/__test__.js"
+  }
+}
