@@ -7,7 +7,6 @@ const _ = require('lodash');
 const XTemplate = require('xtemplate');
 const dslHelper = require('@imgcook/dsl-helper');
 const data = require('./data');
-var originData = require('./origin-data');
 const vm = new NodeVM({
   console: 'inherit',
   sandbox: {}
@@ -28,8 +27,7 @@ describe('Generate', function() {
         const renderInfo = vm.run(code)(data, {
           prettier: prettier,
           helper: dslHelper,
-          _: _,
-          originData: originData
+          _: _
         });
         const renderData = renderInfo.renderData;
         const { modClass, style } = renderData;
