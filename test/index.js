@@ -5,7 +5,6 @@ const thunkify = require('thunkify');
 const path = require('path');
 const prettier = require('prettier');
 const { NodeVM } = require('vm2');
-const dslHelper = require('@imgcook/dsl-helper');
 const _ = require('lodash');
 const data = require('./data');
 
@@ -23,14 +22,37 @@ co(function*() {
   const renderInfo = vm.run(code)(data, {
     prettier: prettier,
     _: _,
-    helper: dslHelper
+    responsive: {
+      width: 750,
+      viewportWidth: 375
+    },
+    utils: {
+      print: function(value) {
+        console.log(value);
+      }
+    }
   });
-  const renderData = renderInfo.renderData;
-  const ret = yield xtplRender(
-    path.resolve(__dirname, '../src/template.xtpl'),
-    renderData,
-    {}
-  );
 
-  console.log(ret);
+  if (renderInfo.noTemplate) {
+    renderInfo.panelDisplay.forEach((file) => {
+      fs.writeFileSync(path.join(__dirname, `../code/${file.panelName}`), file.panelValue);
+    });
+  } else {
+    const renderData = renderInfo.renderData;
+    const ret = yield xtplRender(
+      path.resolve(__dirname, '../src/template.xtpl'),
+      renderData,
+      {}
+    );
+
+    const prettierOpt = renderInfo.prettierOpt || {
+      parser: 'vue',
+      printWidth: 80,
+      singleQuote: true
+    };
+
+    const prettierRes = prettier.format(ret, prettierOpt);
+
+    fs.writeFileSync(path.join(__dirname,'../code/result.vue'), prettierRes);
+  }
 });

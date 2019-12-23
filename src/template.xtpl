@@ -3,10 +3,20 @@
 </template>
 
 <script>
-{{{mockDataScript}}}
-{{{script}}}
+{{{imports}}}
+export default {
+    data() {
+       return {
+           {{{datas.join(',')}}}
+       } 
+    },
+    methods: {
+        {{{methods.join(',')}}}
+    },
+    {{{lifeCycles.join(',')}}}
+}
 </script>
 
 <style scoped>
-{{{style}}}
+    {{{styles.join('\n')}}}
 </style>
