@@ -1,16 +1,11 @@
 <template>
   <div class="box">
-    <div
-      @click="onClick_1"
-      :data-url="item.url"
-      :key="item.index"
-      v-for="(item, index) in data"
-    >
+    <div @click="handleClick_1" v-for="(item, index) in loopData" :key="index">
       <div class="bd">
         <img class="layer" :src="constants.image1" />
-        <img class="bg" :src="item.coverImage" />
+        <img class="bg" :src="constants.image2" />
         <div class="wrap">
-          <img class="riverdinwei" :src="constants.image2" />
+          <img class="riverdinwei" :src="constants.image3" />
           <span class="distance">距离500m</span>
         </div>
       </div>
@@ -19,10 +14,10 @@
       </div>
       <div class="ft">
         <div class="block">
-          <img class="xianjin" :src="constants.image3" />
+          <img class="xianjin" :src="item.user.userImage" />
           <span class="fashionHome">{{ item.user.userName }}</span>
         </div>
-        <div class="group" v-if="isReadCountShow(item.readCount)">
+        <div class="group">
           <img class="favorite" :src="constants.image4" />
           <span class="num">{{ item.readCount }}</span>
         </div>
@@ -32,11 +27,11 @@
 </template>
 <script>
 import { fetch } from 'whatwg-fetch';
-import jsonp from 'fetch-jsonp';
 export default {
   data() {
     return {
-      data: [
+      stateData: 'test',
+      loopData: [
         {
           title: '小户型卫浴怎样才能装得高大上？',
           coverImage:
@@ -64,13 +59,13 @@ export default {
       ],
       constants: {
         image1:
-          'https://img.alicdn.com/tfs/TB1bLoWoYH1gK0jSZFwXXc7aXXa-684-684.png',
+          'https://img.alicdn.com/tfs/TB1DDx_rQL0gK0jSZFxXXXWHVXa-684-684.png',
         image2:
-          'https://img.alicdn.com/tfs/TB1mtZRoVT7gK0jSZFpXXaTkpXa-28-36.png',
+          'https://img.alicdn.com/tfs/TB10TB_rQL0gK0jSZFxXXXWHVXa-684-684.png',
         image3:
-          'https://img.alicdn.com/tfs/TB1OvsYoW61gK0jSZFlXXXDKFXa-60-60.png',
+          'https://img.alicdn.com/tfs/TB1UoB9rQL0gK0jSZFAXXcA9pXa-28-36.png',
         image4:
-          'https://img.alicdn.com/tfs/TB1arwYo7T2gK0jSZFkXXcIQFXa-46-44.png'
+          'https://img.alicdn.com/tfs/TB1pxuarHj1gK0jSZFuXXcrHpXa-46-44.png'
       }
     };
   },
@@ -81,40 +76,35 @@ export default {
     fetch_example() {
       fetch('https://jsonplaceholder.typicode.com/todos/1', {
         method: 'GET',
-        headers: '{"Content-Type":"json"}'
-      })
-        .then(response => response.json())
-        .then((data, error) => {
-          console.log('fetch example: ', data, error);
-          return data;
-        })
-        .catch(e => {
-          console.log('error', e);
-        });
-    },
-    jsonp_example() {
-      jsonp('https://assets.airbnb.com/frontend/search_results.js', {
-        jsonpCallbackFunction: 'search_results',
         body: {}
       })
         .then(response => response.json())
         .then((data, error) => {
-          console.log('jsonp example: ', data, error);
+          console.log(dataHandler);
           return data;
         })
         .catch(e => {
           console.log('error', e);
         });
     },
-    onClick_1(e) {
-      window.open(this.item.url, '_blank');
+    dataHandler(dataMap) {
+      console.log('dataHandler 11');
+      return dataMap;
+    },
+    handleClick_1(e) {
+      window.open(this.item.url);
     }
   },
   created() {
+    console.log('constructor');
     this.fetch_example();
-    this.jsonp_example();
+    this.dataHandler();
   },
-  updated() {}
+  beforeUpdate() {
+    console.log('getDerivedStateFromProps');
+    console.log(props);
+    console.log(state);
+  }
 };
 </script>
 <style scoped>
@@ -157,11 +147,11 @@ export default {
 .wrap {
   box-sizing: border-box;
   display: flex;
-  position: relative;
+  position: absolute;
+  top: 2.4vw;
+  left: 2.4vw;
   align-items: center;
   flex-direction: row;
-  margin-top: 2.4vw;
-  margin-left: 2.4vw;
   border-radius: 2vw;
   background-color: rgba(0, 0, 0, 0.4);
   padding-right: 1.2vw;
@@ -177,12 +167,13 @@ export default {
 
 .distance {
   margin-left: 0.53vw;
+  width: 11.2vw;
   height: 2.93vw;
-  font-weight: 400;
-  font-size: 2.4vw;
-  color: #ffffff;
   line-height: 2.93vw;
   white-space: nowrap;
+  color: #ffffff;
+  font-size: 2.4vw;
+  font-weight: 400;
 }
 
 .main {
@@ -199,12 +190,12 @@ export default {
   margin-top: 2.93vw;
   width: 40vw;
   height: 11.73vw;
-  font-weight: 400;
-  font-size: 4vw;
-  color: #333333;
-  line-height: 5.87vw;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 5.87vw;
+  color: #333333;
+  font-size: 4vw;
+  font-weight: 400;
 }
 
 .ft {
@@ -237,12 +228,11 @@ export default {
 
 .fashionHome {
   margin-left: 0.8vw;
-  height: 3.73vw;
-  font-weight: 300;
-  font-size: 3.2vw;
-  color: #666666;
   line-height: 3.73vw;
   white-space: nowrap;
+  color: #666666;
+  font-size: 3.2vw;
+  font-weight: 300;
 }
 
 .group {
@@ -259,11 +249,10 @@ export default {
 
 .num {
   margin-left: 0.67vw;
-  height: 3.47vw;
-  font-weight: 400;
-  font-size: 2.93vw;
-  color: #999999;
   line-height: 3.47vw;
   white-space: nowrap;
+  color: #999999;
+  font-size: 2.93vw;
+  font-weight: 400;
 }
 </style>

@@ -215,15 +215,18 @@ module.exports = function(schema, option) {
     let loopArgIndex = (loopArg && loopArg[1]) || 'index';
 
     if (Array.isArray(loop)) {
-      data = toString(loop);
+      data = 'loopData';
+      datas.push(`${data}: ${toString(loop)}`);
     } else if (isExpression(loop)) {
       data = loop.slice(2, -2).replace('this.state.', '');
     }
     // add loop key
     const tagEnd = render.indexOf('>');
+    const keyProp = render.slice(0, tagEnd).indexOf('key=') == -1 ? `:key="${loopArgIndex}"` : '';
     render = `
       ${render.slice(0, tagEnd)}
       v-for="(${loopArgItem}, ${loopArgIndex}) in ${data}"  
+      ${keyProp}
       ${render.slice(tagEnd)}`;
 
     // remove `this` 
@@ -340,7 +343,7 @@ module.exports = function(schema, option) {
             const { params, content } = parseFunction(schema.lifeCycles[name]);
 
             if (name === '_constructor') {
-              lifeCycles.push(`${vueLifeCircleName}() { ${init.join('\n')}}`);
+              lifeCycles.push(`${vueLifeCircleName}() {${content} ${init.join('\n')}}`);
             } else {
               lifeCycles.push(`${vueLifeCircleName}() {${content}}`);
             }
@@ -386,13 +389,13 @@ module.exports = function(schema, option) {
             export default {
               data() {
                 return {
-                  ${datas.join(',')}
+                  ${datas.join(',\n')}
                 } 
               },
               methods: {
-                ${methods.join(',')}
+                ${methods.join(',\n')}
               },
-              ${lifeCycles.join(',')}
+              ${lifeCycles.join(',\n')}
             }
           </script>
           <style scoped>

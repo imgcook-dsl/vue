@@ -1,6 +1,6 @@
 module.exports = {
   "componentName": "Page",
-  "id": "Block_745855",
+  "id": "Block_970952",
   "rect": {
     "x": 0,
     "y": 0,
@@ -21,15 +21,13 @@ module.exports = {
   "children": [{
     "componentName": "Div",
     "props": {
-      "onClick": function onClick(e) {
-        window.open(this.item.url, '_blank')
-      },
-      "data-url": "{{this.item.url}}",
-      "key": "{{this.item.index}}"
+      "onClick": function handleClick(e) {
+        window.open(this.item.url);
+      }
     },
     "children": [{
       "componentName": "Div",
-      "id": "Block_644975",
+      "id": "Block_843895",
       "rect": {
         "x": 0,
         "y": 0,
@@ -68,7 +66,7 @@ module.exports = {
             "height": "342px",
             "overflow": "hidden"
           },
-          "src": "https://img.alicdn.com/tfs/TB1bLoWoYH1gK0jSZFwXXc7aXXa-684-684.png",
+          "src": "https://img.alicdn.com/tfs/TB1DDx_rQL0gK0jSZFxXXXWHVXa-684-684.png",
           "className": "layer"
         }
       }, {
@@ -90,8 +88,8 @@ module.exports = {
             "width": "342px",
             "height": "342px"
           },
-          "className": "bg",
-          "src": "{{this.item.coverImage}}"
+          "src": "https://img.alicdn.com/tfs/TB10TB_rQL0gK0jSZFxXXXWHVXa-684-684.png",
+          "className": "bg"
         }
       }, {
         "componentName": "Div",
@@ -107,11 +105,11 @@ module.exports = {
           "style": {
             "boxSizing": "border-box",
             "display": "flex",
-            "position": "relative",
+            "position": "absolute",
+            "top": "18px",
+            "left": "18px",
             "alignItems": "center",
             "flexDirection": "row",
-            "marginTop": "18px",
-            "marginLeft": "18px",
             "borderRadius": "15px",
             "backgroundColor": "rgba(0,0,0,0.40)",
             "paddingRight": "9px",
@@ -136,7 +134,7 @@ module.exports = {
               "width": "14px",
               "height": "18px"
             },
-            "src": "https://img.alicdn.com/tfs/TB1mtZRoVT7gK0jSZFpXXaTkpXa-28-36.png",
+            "src": "https://img.alicdn.com/tfs/TB1UoB9rQL0gK0jSZFAXXcA9pXa-28-36.png",
             "className": "riverdinwei"
           }
         }, {
@@ -152,12 +150,13 @@ module.exports = {
           "props": {
             "style": {
               "marginLeft": "4px",
+              "width": "84px",
               "height": "22px",
-              "fontWeight": 400,
-              "fontSize": "18px",
-              "color": "#ffffff",
               "lineHeight": "22px",
-              "whiteSpace": "nowrap"
+              "whiteSpace": "nowrap",
+              "color": "#ffffff",
+              "fontSize": "18px",
+              "fontWeight": 400
             },
             "text": "距离500m",
             "className": "distance"
@@ -201,12 +200,12 @@ module.exports = {
             "marginTop": "22px",
             "width": "300px",
             "height": "88px",
-            "fontWeight": 400,
-            "fontSize": "30px",
-            "color": "#333333",
-            "lineHeight": "44px",
             "overflow": "hidden",
-            "textOverflow": "ellipsis"
+            "textOverflow": "ellipsis",
+            "lineHeight": "44px",
+            "color": "#333333",
+            "fontSize": "30px",
+            "fontWeight": 400
           },
           "className": "title",
           "text": "{{this.item.title}}"
@@ -242,7 +241,7 @@ module.exports = {
       },
       "children": [{
         "componentName": "Div",
-        "id": "Block_788015",
+        "id": "Block_277147",
         "rect": {
           "x": 18,
           "y": 480,
@@ -274,8 +273,8 @@ module.exports = {
               "width": "30px",
               "height": "30px"
             },
-            "src": "https://img.alicdn.com/tfs/TB1OvsYoW61gK0jSZFlXXXDKFXa-60-60.png",
-            "className": "xianjin"
+            "className": "xianjin",
+            "src": "{{this.item.user.userImage}}"
           }
         }, {
           "componentName": "Text",
@@ -290,12 +289,11 @@ module.exports = {
           "props": {
             "style": {
               "marginLeft": "6px",
-              "height": "28px",
-              "fontWeight": 300,
-              "fontSize": "24px",
-              "color": "#666666",
               "lineHeight": "28px",
-              "whiteSpace": "nowrap"
+              "whiteSpace": "nowrap",
+              "color": "#666666",
+              "fontSize": "24px",
+              "fontWeight": 300
             },
             "className": "fashionHome",
             "text": "{{this.item.user.userName}}"
@@ -303,7 +301,7 @@ module.exports = {
         }]
       }, {
         "componentName": "Div",
-        "id": "Block_615383",
+        "id": "Block_725545",
         "rect": {
           "x": 261,
           "y": 480,
@@ -335,7 +333,7 @@ module.exports = {
               "width": "22px",
               "height": "22px"
             },
-            "src": "https://img.alicdn.com/tfs/TB1arwYo7T2gK0jSZFkXXcIQFXa-46-44.png",
+            "src": "https://img.alicdn.com/tfs/TB1pxuarHj1gK0jSZFuXXcrHpXa-46-44.png",
             "className": "favorite"
           }
         }, {
@@ -351,71 +349,19 @@ module.exports = {
           "props": {
             "style": {
               "marginLeft": "5px",
-              "height": "26px",
-              "fontWeight": 400,
-              "fontSize": "22px",
-              "color": "#999999",
               "lineHeight": "26px",
-              "whiteSpace": "nowrap"
+              "whiteSpace": "nowrap",
+              "color": "#999999",
+              "fontSize": "22px",
+              "fontWeight": 400
             },
             "className": "num",
             "text": "{{this.item.readCount}}"
           }
-        }],
-        "condition": "{{this.isReadCountShow(this.item.readCount)}}"
+        }]
       }]
     }],
-    "loopArgs": ["item", "index"],
-    "loop": "{{this.state.data}}"
-  }],
-  "fileName": "index",
-  "methods": {
-    "isReadCountShow": function isReadCountShow(readCount) {
-      return readCount > 300;
-    }
-  },
-  "lifeCycles": {
-    "_constructor": function constructor(props, context) {
-      console.log('super props');
-    },
-    "componentDidUpdate": (prevProps, prevState, snapshot) => {
-      
-    }
-  },
-  "dataSource": {
-    "list": [{
-      "id": "fetch_example",
-      "isInit": true,
-      "type": "fetch",
-      "options": {
-        "method": "GET",
-        "uri": "https://jsonplaceholder.typicode.com/todos/1",
-        "headers": {
-          "Content-Type": "json"
-        }
-      },
-      "dataHandler": function dataHandler(data, error) {
-        console.log('fetch example: ', data, error)
-        return data;
-      }
-    }, {
-      "id": "jsonp_example",
-      "isInit": true,
-      "type": "jsonp",
-      "options": {
-        "method": "GET",
-        "params": {},
-        "uri": "https://assets.airbnb.com/frontend/search_results.js",
-        "jsonpCallbackFunction": "search_results"
-      },
-      "dataHandler": function dataHandler(data, error) {
-        console.log('jsonp example: ', data, error)
-        return data;
-      }
-    }]
-  },
-  "state": {
-    "data": [{
+    "loop": [{
       "title": "小户型卫浴怎样才能装得高大上？",
       "coverImage": "https://img.alicdn.com/tfs/TB1Txq6o7T2gK0jSZFkXXcIQFXa-684-684.png",
       "readCount": 200,
@@ -434,5 +380,44 @@ module.exports = {
       },
       "url": "https://www.imgcook.com/docs"
     }]
+  }],
+  "fileName": "index",
+  "lifeCycles": {
+    "_constructor": function constructor(props, context) {
+      console.log('constructor');
+    },
+    "getDerivedStateFromProps": function getDerivedStateFromProps(props, state) {
+      console.log('getDerivedStateFromProps');
+      console.log(props);
+      console.log(state);
+    }
+  },
+  "methods": {
+    "isReadCountShow": function isReadCountShow(readCount) {
+      return readCount > 300;
+    }
+  },
+  "state": {
+    "stateData": "test"
+  },
+  "dataSource": {
+    "list": [{
+      "id": "fetch_example",
+      "isInit": true,
+      "type": "fetch",
+      "options": {
+        "method": "GET",
+        "params": {},
+        "uri": "https://jsonplaceholder.typicode.com/todos/1"
+      },
+      "dataHandler": function dataHandler(data, error) {
+        console.log(dataHandler);
+        return data;
+      }
+    }],
+    "dataHandler": function dataHandler(dataMap) {
+      console.log('dataHandler 11');
+      return dataMap;
+    }
   }
 }
