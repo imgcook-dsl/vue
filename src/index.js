@@ -402,7 +402,7 @@ module.exports = function(schema, option) {
             ${styles.join('\n')}
           </style>
         `, prettierOpt),
-        panelType: '',
+        panelType: 'vue',
       }
     ],
     renderData: {
