@@ -388,8 +388,6 @@ module.exports = {
     },
     "getDerivedStateFromProps": function getDerivedStateFromProps(props, state) {
       console.log('getDerivedStateFromProps');
-      console.log(props);
-      console.log(state);
     }
   },
   "methods": {
