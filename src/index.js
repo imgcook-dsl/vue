@@ -26,6 +26,8 @@ module.exports = function(schema, option) {
   // styles
   const styles = [];
 
+  const styles4vw = [];
+
   // box relative style
   const boxStyleList = ['fontSize', 'marginTop', 'marginBottom', 'paddingTop', 'paddingBottom', 'height', 'top', 'bottom', 'width', 'maxWidth', 'left', 'right', 'paddingRight', 'paddingLeft', 'marginLeft', 'marginRight', 'lineHeight', 'borderBottomRightRadius', 'borderBottomLeftRadius', 'borderTopRightRadius', 'borderTopLeftRadius', 'borderRadius'];
 
@@ -41,9 +43,13 @@ module.exports = function(schema, option) {
     'componentWillUnmount': 'beforeDestroy'
   }
 
-  // 1vw = width / 100
-  const _w = (option.responsive.width / 100) || 750;
+  const width = option.responsive.width || 750;
+  const viewportWidth = option.responsive.viewportWidth || 375;
 
+  // 1vw = width / 100
+  const _w = ( width / 100);
+
+  const _ratio = width / viewportWidth;
 
   const isExpression = (value) => {
     return /^\{\{.*\}\}$/.test(value);
@@ -74,16 +80,23 @@ module.exports = function(schema, option) {
   };
 
   // convert to responsive unit, such as vw
-  const parseStyle = (style) => {
+  const parseStyle = (style, toVW) => {
     const styleData = [];
     for (let key in style) {
+      let value = style[key];
       if (boxStyleList.indexOf(key) != -1) {
-        style[key] = (parseInt(style[key]) / _w).toFixed(2) + 'vw';
-        styleData.push(`${_.kebabCase(key)}: ${style[key]}`);
+        if (toVW) {
+          value = (parseInt(value) / _w).toFixed(2);
+          value = value == 0 ? value : value + 'vw';
+        } else {
+          value = (parseInt(value)).toFixed(2);
+          value = value == 0 ? value : value + 'px';
+        }
+        styleData.push(`${_.kebabCase(key)}: ${value}`);
       } else if (noUnitStyles.indexOf(key) != -1) {
-        styleData.push(`${_.kebabCase(key)}: ${parseFloat(style[key])}`);
+        styleData.push(`${_.kebabCase(key)}: ${parseFloat(value)}`);
       } else {
-        styleData.push(`${_.kebabCase(key)}: ${style[key]}`);
+        styleData.push(`${_.kebabCase(key)}: ${value}`);
       }
     }
     return styleData.join(';');
@@ -248,6 +261,11 @@ module.exports = function(schema, option) {
           ${parseStyle(schema.props.style)}
         }
       `);
+      styles4vw.push(`
+        .${className} {
+          ${parseStyle(schema.props.style, true)}
+        }
+      `);
     }
 
     let xml;
@@ -398,11 +416,19 @@ module.exports = function(schema, option) {
               ${lifeCycles.join(',\n')}
             }
           </script>
-          <style scoped>
-            ${styles.join('\n')}
-          </style>
+          <style src="./index.response.css" />
         `, prettierOpt),
         panelType: 'vue',
+      },
+      {
+        panelName: 'index.css',
+        panelValue: prettier.format(`${styles.join('\n')}`, {parser: 'css'}),
+        panelType: 'css'
+      },
+      {
+        panelName: 'index.response.css',
+        panelValue: prettier.format(styles4vw.join('\n'), {parser: 'css'}),
+        panelType: 'css'
       }
     ],
     renderData: {
