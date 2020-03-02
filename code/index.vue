@@ -2,10 +2,19 @@
   <div class="box">
     <div @click="handleClick_1" v-for="(item, index) in loopData" :key="index">
       <div class="bd">
-        <img class="layer" :src="constants.image1" />
-        <img class="bg" :src="constants.image2" />
+        <img
+          class="layer"
+          src="https://img.alicdn.com/tfs/TB1DDx_rQL0gK0jSZFxXXXWHVXa-684-684.png"
+        />
+        <img
+          class="bg"
+          src="https://img.alicdn.com/tfs/TB10TB_rQL0gK0jSZFxXXXWHVXa-684-684.png"
+        />
         <div class="wrap">
-          <img class="riverdinwei" :src="constants.image3" />
+          <img
+            class="riverdinwei"
+            src="https://img.alicdn.com/tfs/TB1UoB9rQL0gK0jSZFAXXcA9pXa-28-36.png"
+          />
           <span class="distance">距离500m</span>
         </div>
       </div>
@@ -18,7 +27,10 @@
           <span class="fashionHome">{{ item.user.userName }}</span>
         </div>
         <div class="group">
-          <img class="favorite" :src="constants.image4" />
+          <img
+            class="favorite"
+            src="https://img.alicdn.com/tfs/TB1pxuarHj1gK0jSZFuXXcrHpXa-46-44.png"
+          />
           <span class="num">{{ item.readCount }}</span>
         </div>
       </div>
@@ -57,16 +69,7 @@ export default {
           url: 'https://www.imgcook.com/docs'
         }
       ],
-      constants: {
-        image1:
-          'https://img.alicdn.com/tfs/TB1DDx_rQL0gK0jSZFxXXXWHVXa-684-684.png',
-        image2:
-          'https://img.alicdn.com/tfs/TB10TB_rQL0gK0jSZFxXXXWHVXa-684-684.png',
-        image3:
-          'https://img.alicdn.com/tfs/TB1UoB9rQL0gK0jSZFAXXcA9pXa-28-36.png',
-        image4:
-          'https://img.alicdn.com/tfs/TB1pxuarHj1gK0jSZFuXXcrHpXa-46-44.png'
-      }
+      constants: {}
     };
   },
   methods: {
@@ -102,9 +105,7 @@ export default {
   },
   beforeUpdate() {
     console.log('getDerivedStateFromProps');
-    console.log(props);
-    console.log(state);
   }
 };
 </script>
-<style src="./index.css" />
+<style src="./index.response.css" />

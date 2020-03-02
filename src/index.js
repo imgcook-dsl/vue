@@ -283,8 +283,13 @@ module.exports = function(schema, option) {
         xml = `<span${classString}${props}>${innerText}</span> `;
         break;
       case 'image':
-        const source = parseProps(schema.props.src, false, 'image');
-        xml = `<img${classString}${props} :src=${source} /> `;
+        let source = parseProps(schema.props.src, false);
+        if (!source.match('"')) {
+          source = `"${source}"`;
+          xml = `<img${classString}${props} :src=${source} /> `;
+        } else {
+          xml = `<img${classString}${props} src=${source} /> `;
+        }
         break;
       case 'div':
       case 'page':
