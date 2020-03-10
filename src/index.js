@@ -212,7 +212,9 @@ module.exports = function(schema, option) {
   const parseCondition = (condition, render) => {
     const tagEnd = render.indexOf('>');
     let _condition = isExpression(condition) ? condition.slice(2, -2) : condition;
-    _condition = _condition.replace('this.', '');
+    if (typeof _condition === 'string') {
+      _condition = _condition.replace('this.', '');
+    }
     render = `
       ${render.slice(0, tagEnd)}
       v-if="${_condition}"  
