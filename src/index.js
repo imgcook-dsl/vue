@@ -210,16 +210,11 @@ module.exports = function(schema, option) {
 
   // parse condition: whether render the layer
   const parseCondition = (condition, render) => {
-    const tagEnd = render.indexOf('>');
     let _condition = isExpression(condition) ? condition.slice(2, -2) : condition;
     if (typeof _condition === 'string') {
       _condition = _condition.replace('this.', '');
     }
-    render = `
-      ${render.slice(0, tagEnd)}
-      v-if="${_condition}"  
-      ${render.slice(tagEnd)}`;
-
+    render = render.replace(/^<\w+\s/, `${render.match(/^<\w+\s/)[0]} v-if="${_condition}" `);
     return render;
   }
 
@@ -310,6 +305,7 @@ module.exports = function(schema, option) {
     }
     if (schema.condition) {
       xml = parseCondition(schema.condition, xml);
+      // console.log(xml);
     }
 
     return xml;
