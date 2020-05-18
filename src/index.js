@@ -142,7 +142,7 @@ module.exports = function(schema, option) {
       methods.push(`${name}_${expressionName[name]}(${params}) {${content}}`);
       return `${name}_${expressionName[name]}`;
     } else {
-      return `${value}`;
+      return `"${value}"`;
     }
   }
 
@@ -272,7 +272,7 @@ module.exports = function(schema, option) {
 
     Object.keys(schema.props).forEach((key) => {
       if (['className', 'style', 'text', 'src'].indexOf(key) === -1) {
-        props += ` ${parsePropsKey(key, schema.props[key])}="${parseProps(schema.props[key])}"`;
+        props += ` ${parsePropsKey(key, schema.props[key])}=${parseProps(schema.props[key])}`;
       }
     })
     switch(type) {
@@ -299,6 +299,12 @@ module.exports = function(schema, option) {
           xml = `<div${classString}${props} />`;
         }
         break;
+      default:
+        if (schema.children && schema.children.length) {
+          xml = `<div${classString}${props}>${transform(schema.children)}</div>`;
+        } else {
+          xml = `<div${classString}${props} />`;
+        }
     }
 
     if (schema.loop) {
@@ -322,7 +328,7 @@ module.exports = function(schema, option) {
     } else {
       const type = schema.componentName.toLowerCase();
 
-      if (['page', 'block', 'component'].indexOf(type) !== -1) {
+      if (['page', 'component'].indexOf(type) !== -1) {
         // 容器组件处理: state/method/dataSource/lifeCycle/render
         const init = [];
 
