@@ -328,7 +328,7 @@ module.exports = function(schema, option) {
     } else {
       const type = schema.componentName.toLowerCase();
 
-      if (['page', 'component'].indexOf(type) !== -1) {
+      if (['page', 'block', 'component'].indexOf(type) !== -1) {
         // 容器组件处理: state/method/dataSource/lifeCycle/render
         const init = [];
 
@@ -376,14 +376,12 @@ module.exports = function(schema, option) {
             }
           });
         }
-
         template.push(generateRender(schema));
 
       } else {
         result += generateRender(schema);
       }
     }
-
     return result;
   };
 
