@@ -351,7 +351,7 @@ module.exports = function(schema, option) {
     if (schema.loop) {
       xml = parseLoop(schema.loop, schema.loopArgs, xml);
     }
-    if (schema.condition) {
+    if (schema.condition && type !== 'image') {
       xml = parseCondition(schema.condition, xml);
     }
     // console.log(xml);
