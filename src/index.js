@@ -76,7 +76,7 @@ module.exports = function(schema, option) {
   const _w = width / 100;
 
   const _ratio = width / viewportWidth;
-  let isPage = true;
+  let isPage = false;
 
   const isExpression = (value) => {
     return /^\{\{.*\}\}$/.test(value);
@@ -361,7 +361,7 @@ module.exports = function(schema, option) {
   // parse schema
   const transform = (schema, flag) => {
     let result = '';
-    if (flag && schema.componentName === 'Page') {
+    if (!flag && schema.componentName === 'Page') {
       isPage = true;
     }
     if (Array.isArray(schema)) {
