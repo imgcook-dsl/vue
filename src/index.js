@@ -312,7 +312,7 @@ module.exports = function(schema, option) {
     let props = '';
 
     Object.keys(schema.props).forEach((key) => {
-      if ([ 'className', 'style', 'text', 'src', 'lines' ].indexOf(key) === -1) {
+      if ([ 'className', 'style', 'text', 'src', 'lines', 'dealGradient' ].indexOf(key) === -1) {
         props += ` ${parsePropsKey(key, schema.props[key])}=${parseProps(schema.props[key])}`;
       }
     });
@@ -354,14 +354,13 @@ module.exports = function(schema, option) {
     if (schema.condition && type !== 'image') {
       xml = parseCondition(schema.condition, xml);
     }
-    // console.log(xml);
     return xml || '';
   };
 
   // parse schema
   const transform = (schema, flag) => {
     let result = '';
-    if (!flag && schema.componentName === 'Page') {
+    if (flag && schema.componentName === 'Page') {
       isPage = true;
     }
     if (Array.isArray(schema)) {
