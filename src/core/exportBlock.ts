@@ -36,7 +36,6 @@ export default function exportMod(schema, option): IPanelDisplay[] {
 
   const isExportGlobalFile = dslConfig.globalCss && schema.componentName == 'Page';
 
-  console.log('dslConfig', dslConfig, blockInPage)
   const fileName = schema.fileName;
   const { cssUnit } = dslConfig;
   const rootSchema = schema;

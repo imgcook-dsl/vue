@@ -105,7 +105,6 @@ module.exports = function (schema, option) {
     panelDisplay = panelDisplay.concat(result);
   }
 
-  console.log('dslConfig', dslConfig)
 
   if (dslConfig.outputStyle == OUTPUT_TYPE.PROJECT) {
     // 依赖 package.json
