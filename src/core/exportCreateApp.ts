@@ -5,6 +5,7 @@ import { CSS_TYPE, OUTPUT_TYPE, prettierJsOpt, prettierCssOpt, prettierJsonOpt, 
 
 export default function exportCreateApp(schema, option): IPanelDisplay[] {
   const fileName = schema.fileName;
+  const folderName = schema.componentName == 'Page' ? './': './components/';
   const {
     dependencies,
     dslConfig,
@@ -25,7 +26,7 @@ export default function exportCreateApp(schema, option): IPanelDisplay[] {
 
   // index.js
   panelValue = `import Vue from 'vue';
-  import App from './${fileName}'
+  import App from '${folderName}${fileName}'
   
   Vue.config.productionTip = false
   
