@@ -185,6 +185,9 @@ export const initSchema = (schema) => {
       default:
         break;
     }
+    if(json.fileName ){
+      json.fileName = kebabCase(json.fileName)
+    }
   });
 };
 

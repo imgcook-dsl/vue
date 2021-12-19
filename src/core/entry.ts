@@ -8,6 +8,7 @@ import {
   getGlobalClassNames,
   genStyleCode,
 } from './utils';
+const camelCase = require('lodash/camelCase');
 import { CSS_TYPE, COMPONENT_TYPE, OUTPUT_TYPE, DSL_CONFIG, initConfig } from './consts';
 
 

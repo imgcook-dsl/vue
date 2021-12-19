@@ -112,7 +112,6 @@ export default function exportMod(schema, option): IPanelDisplay[] {
 
   const _ratio = width / viewportWidth;
   let isPage = false;
-
   if (isExportGlobalFile) {
     importStyles.push(` <style src="./global.css" />`);
   }
@@ -280,7 +279,7 @@ export default function exportMod(schema, option): IPanelDisplay[] {
       case 'component':
         if (isReplace) {
           const compName = json.fileName;
-          xml = `<${compName}/>`;
+          xml = `<${compName} />`;
           // 当前是 Page 模块
           const compPath = rootSchema.componentName == 'Page' ? './components' : '..';
           importMods.push({
