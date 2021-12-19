@@ -186,7 +186,7 @@ export const initSchema = (schema) => {
         break;
     }
     if(json.fileName ){
-      json.fileName = kebabCase(json.fileName)
+      json.fileName = camelCase(json.fileName)
     }
   });
 };
