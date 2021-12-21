@@ -252,8 +252,8 @@ export const parseNumberValue = (value, { cssUnit = 'px', scale }) => {
   if (/^\-?[\d\.]+$/.test(value)) {
     value = parseFloat(value);
     if (cssUnit == 'rpx') {
-      value += 'px';
-    } if (cssUnit == 'rem') {
+      value += 'rpx';
+    } else if (cssUnit == 'rem') {
       const htmlFontSize = DSL_CONFIG.htmlFontSize || 16;
       value = parseFloat((value / htmlFontSize).toFixed(2));
       value = value ? `${value}rem` : value;
