@@ -45,7 +45,7 @@ module.exports = function (schema, option) {
 
   // 记录所有blocks
   traverse(schema, (json) => {
-    switch (json.componentName.toLowerCase()) {
+    switch ((json.componentName || '').toLowerCase()) {
       case 'block':
         blocks.push(json);
         break;
@@ -67,6 +67,9 @@ module.exports = function (schema, option) {
     let className = json.props && json.props.className;
     let classString = '';
     let style = json.props.style;
+    if (!className) {
+      return
+    }
 
     // inline 
     let classnames: string[] = []
@@ -81,8 +84,12 @@ module.exports = function (schema, option) {
       style = cssResults.style;
     }
 
-    classnames.push(className);
-    classString = ` class="${classnames.join(' ')}"`;
+    if (className) {
+      classnames.push(className);
+    }
+    if (classnames.length > 0) {
+      classString = ` class="${classnames.join(' ')}"`;
+    }
 
     json.props.style = style;
     json.classString = classString;

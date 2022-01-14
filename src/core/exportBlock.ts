@@ -240,7 +240,7 @@ export default function exportMod(schema, option): IPanelDisplay[] {
   const generateRender = (json, isReplace = false) => {
     const type = json.componentName.toLowerCase();
     const className = json.props && json.props.className;
-    let classString = json.classString;
+    let classString = json.classString || '';
 
 
     if (className) {
@@ -327,6 +327,9 @@ export default function exportMod(schema, option): IPanelDisplay[] {
 
   // parse schema
   const transform = (schema, flag = false) => {
+    if(typeof schema == 'string'){
+      return schema
+    }
     let result = '';
     if (flag && schema.componentName === 'Page') {
       isPage = true;

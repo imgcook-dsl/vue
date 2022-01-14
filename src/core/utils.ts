@@ -167,6 +167,7 @@ export const initSchema = (schema) => {
     if (node && node.props && node.props.className) {
       node.props.className = String(node.props.className).trim();
     }
+    node.componentName = node.componentName || 'div'
   });
 
   // 关键节点命名兜底
