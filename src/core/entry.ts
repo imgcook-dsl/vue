@@ -28,6 +28,7 @@ module.exports = function (schema, option) {
   option.blockInPage = schema.componentName === 'Page';
   option.pageGlobalCss = schema.css || '';
 
+
   const dslConfig = Object.assign(
     {},
     option._.get(schema, 'imgcook.dslConfig')
@@ -39,6 +40,31 @@ module.exports = function (schema, option) {
   // 初始化全局参数
   initConfig(dslConfig);
 
+  const isExportProject = dslConfig.outputStyle == OUTPUT_TYPE.PROJECT;
+
+
+  // 仅组件时，只导出一个组件
+  if( isExportProject ){
+    // 项目模式，兼容没有Page根节点情况
+    if(schema.componentName === 'Block'){
+      schema = {
+        componentName: 'Page',
+        className: '',
+        props: { style: {}},
+        children: [schema]
+      }
+    }
+  }else{
+    // 组件模式，去除Page
+    traverse(schema, (json) => {
+      if(json.componentName == 'Block'){
+        json.componentName = 'Div'
+      }
+    });
+    schema.componentName = 'Block'
+  }
+
+  console.log('schema', schema)
 
   // clear schema
   initSchema(schema);
@@ -137,6 +163,7 @@ module.exports = function (schema, option) {
 
   return {
     panelDisplay,
+    imagesFolder: isExportProject ? 'src/': '',
     noTemplate: true,
   };
 };

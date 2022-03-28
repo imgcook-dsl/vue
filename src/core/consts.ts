@@ -27,6 +27,11 @@ export const prettierHtmlOpt = {
 };
 
 
+export const prettierMarkDownOpt = {
+  parser: 'md'
+};
+
+
 export const CSS_TYPE = {
   MODULE_CLASS: 'module',
   MODULE_STYLE: 'module_style',

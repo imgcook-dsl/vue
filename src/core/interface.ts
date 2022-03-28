@@ -4,6 +4,7 @@ export interface IPanelDisplay {
   panelValue: string;
   panelType: string;
   folder?: string;
+  type?: string;
   panelImports?: IImport[]
 }
 

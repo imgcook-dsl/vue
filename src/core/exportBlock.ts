@@ -49,7 +49,7 @@ export default function exportMod(schema, option): IPanelDisplay[] {
     schema.fileName = 'App';
     // filePathName = schema.fileName
   } else {
-    folderName = blocksCount == 1 && dslConfig.outputStyle !== OUTPUT_TYPE.PROJECT ? '' : ('components/' + schema.fileName);
+    folderName = dslConfig.outputStyle !== OUTPUT_TYPE.PROJECT ? '' : ('components/' + schema.fileName);
   }
 
 
@@ -76,7 +76,7 @@ export default function exportMod(schema, option): IPanelDisplay[] {
   const utils: string[] = [];
 
   // data
-  const datas: string[] = [];
+  let datas: string[] = [];
 
   const constants = {};
 
@@ -410,6 +410,7 @@ export default function exportMod(schema, option): IPanelDisplay[] {
   // start parse schema
   transform(schema, true);
   datas.push(`constants: ${toString(constants)}`);
+  datas = datas.filter(i=>i!=='');
 
   let indexValue = `
   <template>
@@ -465,6 +466,12 @@ export default function exportMod(schema, option): IPanelDisplay[] {
     folder: folderName,
   });
 
-  return panelDisplay;
+
+  return panelDisplay.map(item=>{
+    if( dslConfig.outputStyle == OUTPUT_TYPE.PROJECT ){
+      item.folder = 'src/' + item.folder;
+    }
+    return item
+  });
 }
 
