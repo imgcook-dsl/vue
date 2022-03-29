@@ -200,10 +200,15 @@ export default function exportMod(schema, option): IPanelDisplay[] {
 
   // parse condition: whether render the layer
   const parseCondition = (condition, render) => {
+
     let _condition = isExpression(condition) ? condition.slice(2, -2) : condition;
     if (typeof _condition === 'string') {
       _condition = _condition.replace('this.', '').replace('state.', '');
+    }else if(typeof _condition === 'boolean'){
+      _condition = String(_condition)
     }
+
+    render = render.trim();
     render = render.replace(/^<\w+\s/, `${render.match(/^<\w+\s/)[0]} v-if="${_condition}" `);
     return render;
   };
