@@ -248,6 +248,7 @@ export const simpleStyle = (schema) => {
     }
     removeStyle(node, 'fontWeight', ['400', 400, 'normal']);
     removeStyle(node, 'flexDirection', ['row']);
+    removeStyle(node, 'textDecoration', ['none']);
   });
 
 
