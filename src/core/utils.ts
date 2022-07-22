@@ -1,5 +1,7 @@
 const find = require('lodash/find');
 const unset = require('lodash/unset');
+const get = require('lodash/get');
+const set = require('lodash/set');
 const camelCase = require('lodash/camelCase');
 const kebabCase = require('lodash/kebabCase');
 const snakeCase = require('lodash/snakeCase');
@@ -150,6 +152,110 @@ export const resetCounter = (key) => {
   counter[key] = 0;
 }
 
+
+// 是否所有样式相同
+function isAllEqual(array) {
+  if (array.length > 0) {
+    return !array.some(function (value, index) {
+      return value !== array[0];
+    });
+  } else {
+    return true;
+  }
+}
+
+// 获得相同样式
+function getMaxSameStyles(array) {
+  if (array.length < 2) {
+    return {}
+  }
+  let maxStyle = {}
+  const keys = Object.keys(array[0])
+  for (let key of keys) {
+    if (isAllEqual(array.map(item => item[key]))) {
+      maxStyle[key] = array[0][key]
+    }
+  }
+
+  return maxStyle
+}
+
+export const commonStyle = (schema) => {
+  traverseBrother(schema, function (nodes) {
+    const sameStyle = getMaxSameStyles(nodes.filter(item => item.props && item.props.style).map(item => item.props.style));
+    if (Object.keys(sameStyle).length > 3) {
+      const commonClassName = genStyleClass(
+        'common_'+nodes[0].props.className,
+        DSL_CONFIG.cssStyle
+      );
+
+      set(schema, `commonStyles.${commonClassName}`, parseStyle(sameStyle))
+      for (let node of nodes) {
+        for (let key of Object.keys(sameStyle)) {
+          unset(node, `props.style.${key}`)
+        }
+        node.classnames = node.classnames || []
+        node.classnames.push(commonClassName)
+      }
+    }
+  })
+}
+
+// 精简样式
+export const simpleStyle = (schema) => {
+
+  function getMaxRepeatItem(array) {
+    let a = {}
+    let max = 0;
+    let maxele = null;
+    for (let i = 0; i < array.length; i++) {
+      a[array[i]] == undefined ? a[array[i]] = 1 : a[array[i]]++;
+      if (a[array[i]] > max) {
+        maxele = array[i];
+        max = a[array[i]];
+      }
+    }
+    return maxele;
+  }
+
+  // 统计出现字体最多的，放到根节点
+  let fontFamilys: string[] = []
+  traverse(schema, (node) => {
+    const ft = get(node, 'props.style.fontFamily');
+    if (ft) {
+      fontFamilys.push(ft)
+    }
+  });
+
+  const rootFont = get(schema, 'props.style.fontFamily') || getMaxRepeatItem(fontFamilys);
+  if (rootFont) {
+    traverse(schema, (node) => {
+      const ft = get(node, 'props.style.fontFamily');
+      if (ft == rootFont) {
+        unset(node, 'props.style.fontFamily');
+      }
+    });
+    set(schema, 'props.style.fontFamily', rootFont);
+  }
+
+  // 删除 font-weight 400 或者 normal
+  traverse(schema, (node) => {
+    const removeStyle = (node, styleName, values) => {
+      const fw = get(node, `props.style.${styleName}`);
+      if (values.includes(String(fw) || '')) {
+        unset(node, `props.style.${styleName}`);
+      }
+    }
+    removeStyle(node, 'fontWeight', ['400', 400, 'normal']);
+    removeStyle(node, 'flexDirection', ['row']);
+  });
+
+
+  
+  return schema;
+}
+
+
 /**
  * 处理schema一些常见问题
  * @param schema 
@@ -217,6 +323,32 @@ export const traverse = (json, callback) => {
   }
 };
 
+
+// 遍历兄弟节点
+export const traverseBrother = (json, callback) => {
+  if (Array.isArray(json)) {
+    json.forEach((node) => {
+      traverseBrother(node, callback)
+    });
+    return
+  }
+
+  if (json && Array.isArray(json.children) && callback) {
+    callback(json.children)
+  }
+
+  if (
+    json.children &&
+    json.children.length > 0 &&
+    Array.isArray(json.children)
+  ) {
+    json.children.forEach((child) => {
+      traverseBrother(child, callback);
+    });
+  }
+};
+
+
 export const genStyleClass = (string = '', type = 'camelCase') => {
   let classArray = string.split(' ');
   classArray = classArray.filter(name => !!name);
@@ -241,7 +373,8 @@ export const genStyleCode = (styles, key = '') => {
     : `${styles}['${key}']`;
 };
 
-export const parseNumberValue = (value, { cssUnit = 'px', scale }) => {
+export const parseNumberValue = (value) => {
+  const { cssUnit = 'px', scale } = DSL_CONFIG;
   value = String(value).replace(/\b[\d\.]+(px|rem|rpx|vw)?\b/, (v) => {
     const nv = parseFloat(v);
     if (!isNaN(nv) && nv !== 0) {
@@ -270,8 +403,8 @@ export const parseNumberValue = (value, { cssUnit = 'px', scale }) => {
 };
 
 // convert to responsive unit, such as vw
-export const parseStyle = (style, params) => {
-  const { scale, cssUnit } = params
+export const parseStyle = (style) => {
+  const { scale, cssUnit } = DSL_CONFIG
   const resultStyle = {}
   for (let key in style) {
     switch (key) {
@@ -299,13 +432,13 @@ export const parseStyle = (style, params) => {
       case 'borderRadius':
         resultStyle[key] = parseInt(style[key]) * scale;
         if (style[key]) {
-          resultStyle[key] = parseNumberValue(style[key], params);
+          resultStyle[key] = parseNumberValue(style[key]);
         }
         break;
       default:
         if (style[key] && String(style[key]).includes('px')) {
           resultStyle[key] = String(style[key]).replace(/[\d\.]+px/g, (v) => {
-            return /^[\d\.]+px$/.test(v) ? parseNumberValue(v, params) : v;
+            return /^[\d\.]+px$/.test(v) ? parseNumberValue(v) : v;
           })
         }
         resultStyle[key] = resultStyle[key] || style[key]
@@ -314,6 +447,7 @@ export const parseStyle = (style, params) => {
 
   return resultStyle;
 };
+
 
 // parse function, return params and content
 export const parseFunction = (func) => {

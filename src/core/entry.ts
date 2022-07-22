@@ -6,7 +6,7 @@ import {
   traverse,
   genStyleClass,
   getGlobalClassNames,
-  genStyleCode,
+  simpleStyle,
 } from './utils';
 const camelCase = require('lodash/camelCase');
 import { CSS_TYPE, COMPONENT_TYPE, OUTPUT_TYPE, DSL_CONFIG, initConfig } from './consts';
@@ -88,6 +88,11 @@ module.exports = function (schema, option) {
     }
   });
 
+
+  // 精简默认样式
+  simpleStyle(schema)
+
+  
   // 提取全局样式，类名数组存于 json.classString , 剩余样式覆盖 style
   traverse(schema, (json) => {
     let className = json.props && json.props.className;

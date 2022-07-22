@@ -249,10 +249,7 @@ export default function exportMod(schema, option): IPanelDisplay[] {
 
 
     if (className) {
-      style[className] = parseStyle(json.props.style, {
-        scale,
-        cssUnit,
-      });
+      style[className] = parseStyle(json.props.style);
     }
 
 
