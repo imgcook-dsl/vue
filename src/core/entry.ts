@@ -11,8 +11,6 @@ import {
 const camelCase = require('lodash/camelCase');
 import { CSS_TYPE, COMPONENT_TYPE, OUTPUT_TYPE, DSL_CONFIG, initConfig } from './consts';
 
-
-
 import exportBlock from './exportBlock';
 // const exportPage from './exportPage';
 import exportCreateApp from './exportCreateApp';
@@ -51,7 +49,8 @@ module.exports = function (schema, option) {
         componentName: 'Page',
         className: '',
         props: { style: {}},
-        children: [schema]
+        children: [schema],
+        css: schema.css || ''
       }
     }
   }else{
