@@ -1,3 +1,4 @@
+import { OUTPUT_TYPE } from './consts';
 import { IPanelDisplay } from './interface';
 const { CSS_TYPE, prettierCssOpt } = require('./consts');
 
@@ -15,7 +16,7 @@ export default function exportGlobalCss(schema, option): IPanelDisplay[]  {
         panelName: `global.css`,
         panelValue: prettier.format(schema.css || '', prettierCssOpt),
         panelType: 'css',
-        // folder: './',
+        folder:dslConfig.outputStyle == OUTPUT_TYPE.PROJECT ? './src/' : './',
       },
     ];
   } else {
